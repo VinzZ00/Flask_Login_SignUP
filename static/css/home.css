@@ -1,0 +1,20 @@
+#homeBody {
+    text-align: center;
+    display: flexbox;
+    margin: 70px, 0;
+    background-color: black;
+    
+}
+
+#homeBody > div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#homeBody > div > p {
+    color: rgb( 121, 255, 236 );
+}
+
+h1{
+    color: white;
+}
