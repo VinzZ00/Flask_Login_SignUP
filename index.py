@@ -7,7 +7,7 @@ from flask import Flask, request, render_template, url_for, Response, redirect, 
 import firebase_admin
 from firebase_admin import credentials, auth
 import pyrebase
-from flask_session import Session
+
 
 # cred = credentials.Certificate("serviceAccountKey.json");
 # n.initialize_app()
@@ -23,9 +23,7 @@ adminAuth = firebase_admin.initialize_app(cred)
 # if (__name__ == "__main__"): 
     
 app = Flask(__name__)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+
 
 
 @app.errorhandler(werkzeug.exceptions.HTTPException)
@@ -42,13 +40,18 @@ def handleBadRequest(e) :
 
 @app.route('/home')
 def Home():
-    return render_template("home.html", title = "After Login", email = session.get('Email'), password = session.get("Password"));
+    return render_template("home.html", title = "After Login", email = session["Email"], password = session["Password"]);
+
+@app.route("/Logout") 
+def Logout() :
+    session.pop('Email')
+    session.pop('Password')
+    return redirect(url_for("Login"));
 
 @app.route("/Login", methods=['POST', 'GET'])
 def Login(): 
     if request.method == 'GET':
-        session.clear()
-        return render_template("base.html", Header = "Login", buttonText = "Login");
+        return render_template("base.html", Header = "Login", buttonText = "Login")
     elif request.method == "POST" :
         print("INI masuk")
         Email = request.form['email'];
@@ -91,6 +94,7 @@ def notFOund():
 
 
 if __name__ == "__main__" :
+    app.secret_key = "myServer"
     app.run(debug=True);
     
     # use the Url for static when your file name or folder name aren't "static" anymore
