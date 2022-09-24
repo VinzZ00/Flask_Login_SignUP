@@ -1,8 +1,9 @@
 # Note if one day your static files in the folder can't  be readed or ur css has problem, then just
 # hard Refresh the page by (ctrl + shift + R)
 import json
-from urllib.error import HTTPError
-import werkzeug;
+from requests.exceptions import HTTPError
+
+import werkzeug
 from flask import Flask, request, render_template, url_for, Response, redirect, session
 import firebase_admin
 from firebase_admin import credentials, auth
@@ -59,7 +60,7 @@ def Login():
         try :
             User = Auth.sign_in_with_email_and_password(Email, Password);
         except HTTPError :
-            return "<h1>Error your email or password is invalid </h1>"
+            return "<h1>Error your Email or password is invalid</h1>";
 
 
         if User :
